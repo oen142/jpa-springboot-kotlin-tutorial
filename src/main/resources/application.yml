@@ -1,0 +1,18 @@
+spring:
+  jpa:
+    show-sql: true
+    database: mysql
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Asia/Seoul
+        format_sql: true
+    open-in-view: false
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/jpa
+    username: root
+    password: strongpassword
+    driver-class-name: com.mysql.cj.jdbc.Driver
