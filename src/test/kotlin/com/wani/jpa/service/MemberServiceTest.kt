@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
+import java.lang.IllegalStateException
 
 @SpringBootTest
 @Transactional
@@ -31,11 +32,25 @@ internal class MemberServiceTest(
         val saveId = memberService.join(member)
 
         assertThat(member).isEqualTo(memberRepository.findOne(saveId))
-
     }
 
     @Test
     fun `중복_회원_예외`() {
+        val member1 = Member(
+            id = 0L,
+            name = "kim1",
+            address = Address("a", "b", "c")
+        )
+        val member2 = Member(
+            id = 0L,
+            name = "kim1",
+            address = Address("a", "b", "c")
+        )
+
+        memberService.join(member1)
+        assertThatThrownBy {
+            memberService.join(member2)
+        }.isInstanceOf(IllegalStateException::class.java)
 
     }
 }

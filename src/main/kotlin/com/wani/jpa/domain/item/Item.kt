@@ -1,6 +1,7 @@
 package com.wani.jpa.domain.item
 
 import com.wani.jpa.domain.Category
+import com.wani.jpa.exception.NotEnoughStockException
 import javax.persistence.*
 
 @Entity
@@ -21,4 +22,16 @@ abstract class Item(
     var categories: MutableList<Category> = mutableListOf()
 ) {
 
+    // == 비즈니스 로직 == //
+    fun addStockQuantity(quantity: Int) {
+        this.stockQuantity = this.stockQuantity ?: 0 + quantity
+    }
+
+    fun removeStockQuantity(quantity: Int) {
+        val restStock = this.stockQuantity ?: 0 - quantity
+        if (restStock < 0) {
+            throw NotEnoughStockException("need more stock")
+        }
+        this.stockQuantity = restStock
+    }
 }
